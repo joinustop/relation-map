@@ -76,7 +76,10 @@ export default {
           name: "box",
         });
 
-        group.addShape("rect", {
+        const mainGroup = group.addGroup({
+          id: "mainGroup",
+        });
+        mainGroup.addShape("rect", {
           attrs: {
             x: 0,
             y: 0,
@@ -89,7 +92,10 @@ export default {
           name: "rect-shape",
         });
 
-        group.addShape("rect", {
+        const lbGroup = group.addGroup({
+          id: "lbGroup",
+        });
+        lbGroup.addShape("rect", {
           attrs: {
             x: 1,
             y: config.height - 16 - 24,
@@ -101,7 +107,11 @@ export default {
           },
           name: "lr-shape",
         });
-        group.addShape("rect", {
+
+        const rbGroup = group.addGroup({
+          id: "rbGroup",
+        });
+        rbGroup.addShape("rect", {
           attrs: {
             x: 1 + 75 + 2,
             y: config.height - 16 - 24,
@@ -112,7 +122,10 @@ export default {
           },
           name: "rr-shape",
         });
-        /* 左边标记 */
+
+        return container;
+      },
+      createNodeSign: (group, config) => {
         group.addShape("polygon", {
           attrs: {
             points: [
@@ -140,8 +153,8 @@ export default {
         group.addShape("text", {
           attrs: {
             text: "1W",
-            x:6,
-            y:1,
+            x: 6,
+            y: 1,
             fontSize: 14,
             textAlign: "center",
             textBaseline: "middle",
@@ -149,7 +162,6 @@ export default {
           },
           name: "sign-text",
         });
-        return container;
       },
       /* 生成树上的 marker */
       createNodeMarker: (group, config, x, y) => {
@@ -244,10 +256,19 @@ export default {
           config.height
         );
 
+        const signGroup = group.addGroup({
+          id: "signGroup",
+        });
+
+        nodeBasicMethod.createNodeSign(signGroup, config);
+
+        const controlGroup = group.addGroup({
+          id: "controlGroup",
+        });
         const hasChildren = cfg.children && cfg.children.length > 0;
         if (hasChildren) {
           nodeBasicMethod.createNodeMarker(
-            group,
+            controlGroup,
             config,
             config.width / 2,
             config.height - 8
@@ -286,7 +307,6 @@ export default {
           item.update({ collapsed });
         }
       });
-
     };
     initEvent();
   },
