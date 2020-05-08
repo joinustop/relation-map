@@ -7,12 +7,22 @@ const getNodeConfig = (node) => {
     greenColor: "#73C915",
     orangeColor: "#FFAA00",
     blueColor:"#2693F2",
+    whiteColor:"#FFFFFF",
+    grayColor:"#333333",
+    shadowStyle:{
+      shadowColor:"#CCCCCC",
+      shadowOffsetX:1,
+      shadowOffsetY:1,
+      shadowBlur: 10,
+    },
     xOffset: 10,
     yOffset: 12,
     width: 154,
     height: 100,
     signWidth:36,
     signHeight:24,
+    canEdit:true,
+    size:15
   };
   switch (node.type) {
     case "root": {

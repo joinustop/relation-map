@@ -1,54 +1,18 @@
 let data = {
-  id: "Modeling Methods",
+  id: "root",
   children: [
     {
       id: "Classification",
-      children: [
-        { id: "Logistic regression" },
-        { id: "Linear discriminant analysis" },
-        { id: "Rules" },
-        { id: "Decision trees" },
-        { id: "Naive Bayes" },
-        { id: "K nearest neighbor" },
-        { id: "Probabilistic neural network" },
-        { id: "Support vector machine" },
-      ],
+      children: [{ id: "Logistic regression" }],
     },
     {
       id: "Consensus",
-      children: [
-        {
-          id: "Models diversity",
-          children: [
-            { id: "Different initializations" },
-            { id: "Different parameter choices" },
-            { id: "Different architectures" },
-            { id: "Different modeling methods" },
-            { id: "Different training sets" },
-            { id: "Different feature sets" },
-          ],
-        },
-        {
-          id: "Methods",
-          children: [
-            { id: "Classifier selection" },
-            { id: "Classifier fusion" },
-          ],
-        },
-        {
-          id: "Common",
-          children: [{ id: "Bagging" }, { id: "Boosting" }, { id: "AdaBoost" }],
-        },
-      ],
     },
     {
       id: "Regression",
       children: [
-        { id: "Multiple linear regression" },
-        { id: "Partial least squares" },
-        { id: "Multi-layer feedforward neural network" },
-        { id: "General regression neural network" },
-        { id: "Support vector regression" },
+        { id: "Multiple linear regression", children: [{ id: "sub" }] },
+        { id: "bbb"},
       ],
     },
   ],
