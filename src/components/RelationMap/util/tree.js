@@ -1,7 +1,7 @@
 // 设置指定值（递归）
 export function setRecursion(obj, fn) {
   fn(obj);
-  if (hasChild(obj)) {
+  if (hasChildren(obj)) {
     obj.children.forEach((child) => {
       setRecursion(child, fn);
     });
@@ -13,6 +13,6 @@ export function getIndex(node, childID) {
 }
 
 // 是否拥有子节点
-export function hasChild(obj) {
+export function hasChildren(obj) {
   return obj.children && obj.children.length > 0;
 }

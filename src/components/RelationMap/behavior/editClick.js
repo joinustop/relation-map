@@ -18,6 +18,6 @@ export default {
   shouldBegin(evt) {
     const target = evt.target;
     var name = target.get("name");
-    return name === "editBox" || name == "editIcon";
+    return name === "shape-circle-edit" || name == "editIcon";
   },
 };

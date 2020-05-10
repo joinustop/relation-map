@@ -12,7 +12,7 @@ export default {
     const parentModel = parent.getModel();
     let parentData = graph.findDataById(parentModel.id);
 
-    if (treeUtil.hasChild(data)) {
+    if (treeUtil.hasChildren(data)) {
       // 有子节点的，移除节点并将子节点上移
       // 不重设id会导致节点收缩 temp
       // todo 优化移动节点功能
@@ -29,7 +29,7 @@ export default {
       // 没有子节点的，直接移除
       graph.removeChild(model.id);
       parentData = graph.findDataById(parentModel.id);
-      if (!treeUtil.hasChild(parentData)) {
+      if (!treeUtil.hasChildren(parentData)) {
         setTimeout(() => {
           parent.refresh();
         }, 400);

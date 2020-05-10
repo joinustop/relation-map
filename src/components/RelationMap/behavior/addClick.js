@@ -19,7 +19,7 @@ export default {
     const target = evt.target;
     var name = target.get("name");
     return (
-      name === "addBox" || name == "addIcon"
+      name === "shape-circle-add" || name == "addIcon"
     );
   },
 };
