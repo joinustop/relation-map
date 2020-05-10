@@ -34,7 +34,7 @@ export default {
             type: "collapse-expand",
             shouldBegin(evt) {
               const target = evt.target;
-              return target.get("name") === "collapse-icon";
+              return target.get("name") === "shape-marker-collapse";
             },
           },
           "drag-canvas",

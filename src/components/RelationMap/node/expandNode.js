@@ -1,9 +1,12 @@
 import {
-  getNodeConfig,
-  EXPAND_ICON,
-  COLLAPSE_ICON,
   getTextStyle,
   getCircleStyle,
+  getRectStyle,
+  getMarkerStyle,
+  getPolygonStyle,
+  getPositionColor,
+  getLevelColor,
+  baseStyle,
 } from "../helper";
 import { treeUtil, dataUtil } from "../util";
 
@@ -16,24 +19,23 @@ export default {
   //     },
   //   },
   draw(cfg, group) {
-    const styleConfig = getNodeConfig(cfg);
-    const container = nodeBasicMethod.createNodeBox(group, cfg, styleConfig);
+    const container = nodeBasicMethod.createNodeBox(group, cfg);
 
-    // const signGroup = group.addGroup({
-    //   id: "signGroup",
-    // });
-
-    // nodeBasicMethod.createNodeSign(signGroup, styleConfig);
+    // 左上角标识
+    const signGroup = group.addGroup({
+      id: "group-sign",
+    });
+    nodeBasicMethod.createNodeSign(signGroup);
 
     const controlGroup = group.addGroup({
-      id: "controlGroup",
+      id: "group-control",
     });
     const hasChildren = treeUtil.hasChildren(cfg);
     if (hasChildren) {
-      nodeBasicMethod.createNodeMarker(controlGroup, cfg, styleConfig);
+      nodeBasicMethod.createNodeMarker(controlGroup, cfg);
     }
 
-    nodeBasicMethod.createEditBox(group, styleConfig);
+    nodeBasicMethod.createEditBox(group);
     return container;
   },
   getAnchorPoints() {
@@ -45,7 +47,7 @@ export default {
   afterDraw(cfg, group) {
     /* 操作 marker 的背景色显示隐藏 */
     const icon = group.find(
-      (element) => element.get("name") === "collapse-icon"
+      (element) => element.get("name") === "shape-marker-collapse"
     );
     if (icon) {
       const bg = group.find(
@@ -91,7 +93,7 @@ export default {
     //     });
     //   }
     if (name === "edit") {
-      const editGroup = group.findById("editGroup");
+      const editGroup = group.findById("group-edit");
       if (value) {
         editGroup.show();
       } else {
@@ -103,76 +105,64 @@ export default {
 };
 
 const nodeBasicMethod = {
-  createNodeBox: (group, cfg, styleConfig) => {
-    const w = styleConfig.width;
-    const h = styleConfig.height;
-    console.log(group, styleConfig);
+  createNodeBox: (group, cfg) => {
+    const w = baseStyle.width;
+    const h = baseStyle.height;
     /* 最外面的大矩形 */
-    const container = group.addShape("rect", {
+    const container = nodeBasicMethod.createRect(group, {
+      name: "box",
       attrs: {
-        x: 0,
-        y: 0,
         width: w,
         height: h,
       },
-      name: "box",
     });
 
     const mainGroup = group.addGroup({
-      id: "mainGroup",
+      id: "group-main",
     });
-    mainGroup.addShape("rect", {
+    nodeBasicMethod.createRect(mainGroup, {
+      name: "main",
       attrs: {
-        x: 0,
-        y: 0,
         width: w,
         height: h - 16,
-        fill: styleConfig.bgColor,
-        stroke: styleConfig.borderColor,
-        radius: 2,
       },
-      name: "rect-shape",
     });
 
-    const lbGroup = group.addGroup({
-      id: "lbGroup",
+    const { name, job, line, position, level } = cfg;
+
+    const positionGroup = group.addGroup({
+      id: "group-position",
     });
-    lbGroup.addShape("rect", {
+    nodeBasicMethod.createRect(positionGroup, {
+      name: "position",
       attrs: {
         x: 1,
-        y: styleConfig.height - 16 - 24,
-        width: 75,
-        height: 24,
-        fill: styleConfig.orangeColor,
-        stroke: styleConfig.orangeColor,
+        y: baseStyle.height - 16 - 24,
+        fill: getPositionColor(position),
+        stroke: getPositionColor(position),
       },
-      name: "lr-shape",
     });
 
-    const rbGroup = group.addGroup({
-      id: "rbGroup",
+    const levelGroup = group.addGroup({
+      id: "group-level",
     });
-    rbGroup.addShape("rect", {
+    nodeBasicMethod.createRect(levelGroup, {
+      name: "level",
       attrs: {
         x: 1 + 75 + 2,
-        y: styleConfig.height - 16 - 24,
-        width: 75,
-        height: 24,
-        fill: styleConfig.greenColor,
-        stroke: styleConfig.greenColor,
+        y: baseStyle.height - 16 - 24,
+        fill: getLevelColor(level),
+        stroke: getLevelColor(level),
       },
-      name: "rr-shape",
     });
 
-    // eslint-disable-next-line no-unused-vars
-    const { name, job, line, position, level } = cfg;
-    // todo 计算偏移量，让name+dot+line在节点中大致居中
+    // todo 计算偏移量，让name + dot + line在节点中大致居中
     nodeBasicMethod.createText(mainGroup, {
       name: "name",
       text: name,
       attrs: {
         x: w / 2,
-        y: 19,
+        y: 19 + 3,
       },
     });
 
@@ -202,7 +192,7 @@ const nodeBasicMethod = {
       },
     });
 
-    nodeBasicMethod.createText(lbGroup, {
+    nodeBasicMethod.createText(positionGroup, {
       name: "position",
       text: dataUtil.formatPosition(position),
       attrs: {
@@ -211,7 +201,7 @@ const nodeBasicMethod = {
       },
     });
 
-    nodeBasicMethod.createText(rbGroup, {
+    nodeBasicMethod.createText(levelGroup, {
       name: "level",
       text: level,
       attrs: {
@@ -222,28 +212,9 @@ const nodeBasicMethod = {
 
     return container;
   },
-  createNodeSign: (group, styleConfig) => {
-    group.addShape("polygon", {
-      attrs: {
-        points: [
-          [-styleConfig.xOffset, -styleConfig.yOffset],
-          [-styleConfig.xOffset + styleConfig.signWidth, -styleConfig.yOffset],
-          [
-            -styleConfig.xOffset + styleConfig.signWidth - 4,
-            -styleConfig.yOffset + styleConfig.signHeight / 2 + 2,
-          ],
-          [
-            -styleConfig.xOffset + styleConfig.signWidth,
-            -styleConfig.yOffset + styleConfig.signHeight,
-          ],
-          [-styleConfig.xOffset, -styleConfig.yOffset + styleConfig.signHeight],
-        ],
-        fill: styleConfig.bgColor,
-        stroke: styleConfig.borderColor,
-        lineWidth: 1,
-        ...styleConfig.shadowStyle,
-      },
-      name: "polygon-shape",
+  createNodeSign: (group) => {
+    nodeBasicMethod.createPolygon(group, {
+      name: "sign",
     });
 
     nodeBasicMethod.createText(group, {
@@ -255,41 +226,31 @@ const nodeBasicMethod = {
       },
     });
   },
-  createEditBox: (group, styleConfig) => {
+  createEditBox: (group) => {
     const editGroup = group.addGroup({
-      id: "editGroup",
+      id: "group-edit",
       visible: false,
     });
 
-    editGroup.addShape("rect", {
-      attrs: {
-        x: 0,
-        y: 0,
-        width: styleConfig.width,
-        height: styleConfig.height - 16,
-        fill: styleConfig.grayColor,
-        opacity: 0.3,
-        stroke: styleConfig.borderColor,
-        radius: 2,
-      },
+    nodeBasicMethod.createRect(editGroup, {
       name: "shadow-mask",
     });
 
-    nodeBasicMethod.createBoxBtn(editGroup, styleConfig, "add", {
+    nodeBasicMethod.createBoxBtn(editGroup, "add", {
       x: 16 + 15,
       y: 84 / 2,
     });
-    nodeBasicMethod.createBoxBtn(editGroup, styleConfig, "edit", {
+    nodeBasicMethod.createBoxBtn(editGroup, "edit", {
       x: 16 * 2 + 30 + 15,
       y: 84 / 2,
     });
-    nodeBasicMethod.createBoxBtn(editGroup, styleConfig, "delete", {
+    nodeBasicMethod.createBoxBtn(editGroup, "delete", {
       x: 16 * 3 + 30 * 2 + 15,
       y: 84 / 2,
-      fill: styleConfig.orangeColor,
+      fill: baseStyle.orangeColor,
     });
   },
-  createBoxBtn: (group, styleConfig, action, attrs) => {
+  createBoxBtn: (group, action, attrs) => {
     let name = "";
     let icon = "";
     switch (action) {
@@ -307,7 +268,7 @@ const nodeBasicMethod = {
         break;
     }
     const currentGroup = group.addGroup({
-      id: name + "Group",
+      id: "group-sub-" + name,
       visible: true,
     });
 
@@ -318,25 +279,21 @@ const nodeBasicMethod = {
         y: attrs.y,
       },
     });
-    currentGroup.addShape("text", {
+
+    nodeBasicMethod.createText(currentGroup, {
+      name,
       attrs: {
-        fontFamily: "iconfont", // 对应css里面的font-family: "iconfont";
-        textAlign: "center",
-        textBaseline: "middle",
-        text: icon,
-        fontSize: styleConfig.size,
-        cursor: "pointer",
         x: attrs.x,
         y: attrs.y,
-        fill: attrs.fill ? attrs.fill : styleConfig.blueColor,
+        text: icon,
+        fill: attrs.fill ? attrs.fill : baseStyle.blueColor,
       },
-      name: name + "Icon",
     });
   },
   /* 生成树上的 marker */
-  createNodeMarker: (group, cfg, styleConfig) => {
-    const x = styleConfig.width / 2;
-    const y = styleConfig.height - 8;
+  createNodeMarker: (group, cfg) => {
+    const x = baseStyle.width / 2;
+    const y = baseStyle.height - 8;
     nodeBasicMethod.createCircle(group, {
       name: "collapse",
       attrs: {
@@ -344,20 +301,17 @@ const nodeBasicMethod = {
         y,
       },
     });
-    group.addShape("marker", {
-      attrs: {
-        x,
-        y,
-        r: 7,
-        symbol: cfg.collapsed ? EXPAND_ICON : COLLAPSE_ICON,
-        stroke: styleConfig.blueColor,
-        fill: "rgba(0,0,0,0)",
-        lineWidth: 1,
-        cursor: "pointer",
+    nodeBasicMethod.createMarker(
+      group,
+      {
+        name: "collapse",
+        attrs: {
+          x,
+          y,
+        },
       },
-      name: "collapse-icon",
-      id: "collapse-icon",
-    });
+      cfg
+    );
   },
   /**
    * 创建Text图形
@@ -370,7 +324,7 @@ const nodeBasicMethod = {
       throw "config.name is invalid";
     }
     const textStyle = getTextStyle(name);
-    group.addShape("text", {
+    return group.addShape("text", {
       attrs: {
         text,
         ...textStyle,
@@ -390,12 +344,69 @@ const nodeBasicMethod = {
       throw "config.name is invalid";
     }
     const circleStyle = getCircleStyle(name);
-    group.addShape("circle", {
+    return group.addShape("circle", {
       attrs: {
         ...circleStyle,
         ...attrs,
       },
       name: "shape-circle-" + name,
+    });
+  },
+  /**
+   * 创建Rect图形
+   * @param {group} object
+   * @param {config} object
+   */
+  createRect: (group, config) => {
+    const { name, attrs } = config;
+    if (!name) {
+      throw "config.name is invalid";
+    }
+    const rectStyle = getRectStyle(name);
+    return group.addShape("rect", {
+      attrs: {
+        ...rectStyle,
+        ...(attrs || {}),
+      },
+      name: "shape-rect-" + name,
+    });
+  },
+  /**
+   * 创建Marker图形
+   * @param {group} object
+   * @param {config} object
+   */
+  createMarker: (group, config, cfg) => {
+    const { name, attrs } = config;
+    if (!name) {
+      throw "config.name is invalid";
+    }
+    const markerStyle = getMarkerStyle(name, cfg);
+    return group.addShape("marker", {
+      attrs: {
+        ...markerStyle,
+        ...(attrs || {}),
+      },
+      name: "shape-marker-" + name,
+    });
+  },
+  /**
+   * 创建Polygon图形
+   * @param {group} object
+   * @param {config} object
+   */
+  createPolygon: (group, config) => {
+    const { name, attrs } = config;
+    if (!name) {
+      throw "config.name is invalid";
+    }
+    const markerStyle = getPolygonStyle(name);
+    return group.addShape("polygon", {
+      attrs: {
+        ...markerStyle,
+        ...(attrs || {}),
+      },
+      name: "shape-polygon-" + name,
     });
   },
 };

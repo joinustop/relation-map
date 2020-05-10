@@ -13,7 +13,7 @@ export default {
     const { target, item } = evt;
     const { graph } = this;
     // 排除从控制分组进入node
-    if (target.getParent().get("id") == "controlGroup") {
+    if (target.getParent().get("id") == "group-control") {
       return;
     }
     graph.setItemState(item, "edit", true);
@@ -26,7 +26,7 @@ export default {
     const { target, item } = evt;
     const { graph } = this;
     if (!item.hasState("edit")) {
-      if (target.getParent().get("id") === "controlGroup") {
+      if (target.getParent().get("id") === "group-control") {
         graph.setItemState(item, "edit", true);
       }
     }

@@ -19,6 +19,6 @@ export default {
   shouldBegin(evt) {
     const target = evt.target;
     var name = target.get("name");
-    return name === "shape-circle-delete" || name == "deleteIcon";
+    return name === "shape-circle-delete" || name == "shape-text-delete";
   },
 };
