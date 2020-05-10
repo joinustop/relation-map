@@ -19,7 +19,6 @@ export default {
   shouldBegin(evt) {
     const target = evt.target;
     var name = target.get("name");
-    console.log(name);
     return name === "deleteBox" || name == "deleteIcon";
   },
 };

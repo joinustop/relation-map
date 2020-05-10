@@ -9,7 +9,6 @@ export default {
   //     },
   //   },
   draw(cfg, group) {
-    console.log("draw", cfg, group);
     const { collapsed } = cfg;
     const config = getNodeConfig(cfg);
     config.collapsed = collapsed;

@@ -10,7 +10,7 @@ export default {
     const model = item.getModel();
     const data = graph.findDataById(model.id);
     const parentModel = parent.getModel();
-    const parentData = graph.findDataById(parentModel.id);
+    let parentData = graph.findDataById(parentModel.id);
 
     if (treeUtil.hasChild(data)) {
       // 有子节点的，移除节点并将子节点上移
@@ -28,7 +28,8 @@ export default {
     } else {
       // 没有子节点的，直接移除
       graph.removeChild(model.id);
-      if (!treeUtil.hasChild) {
+      parentData = graph.findDataById(parentModel.id);
+      if (!treeUtil.hasChild(parentData)) {
         setTimeout(() => {
           parent.refresh();
         }, 400);
