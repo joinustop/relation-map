@@ -58,10 +58,10 @@
     "@antv/util" "~2.0.0"
     detect-browser "^4.6.0"
 
-"@antv/g6@^3.4.7":
-  version "3.4.7"
-  resolved "https://registry.npm.taobao.org/@antv/g6/download/@antv/g6-3.4.7.tgz?cache=0&sync_timestamp=1587041551503&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40antv%2Fg6%2Fdownload%2F%40antv%2Fg6-3.4.7.tgz#ea21ef09d6ae336b29f43e35fd192c423dd6c40f"
-  integrity sha1-6iHvCdauM2sp9D41/RksQj3WxA8=
+"@antv/g6@^3.4.9":
+  version "3.4.9"
+  resolved "https://registry.npm.taobao.org/@antv/g6/download/@antv/g6-3.4.9.tgz#f417adcdc58a574b3799d6d06fbce493fbf3036f"
+  integrity sha1-9BetzcWKV0s3mdbQb7zkk/vzA28=
   dependencies:
     "@antv/dom-util" "^2.0.1"
     "@antv/event-emitter" "~0.1.0"
