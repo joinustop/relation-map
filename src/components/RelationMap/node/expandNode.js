@@ -7,7 +7,7 @@ import {
   getPositionColor,
   getLevelColor,
   baseStyle,
-} from "../helper";
+} from "../style";
 import { treeUtil, dataUtil } from "../util";
 
 export default {
