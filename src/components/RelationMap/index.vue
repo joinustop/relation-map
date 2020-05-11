@@ -17,6 +17,9 @@ export default {
     const width = document.getElementById("mapContainer").scrollWidth;
     const height = document.getElementById("mapContainer").scrollHeight || 500;
     const editor = new Editor(width, height);
+    editor.onNameClick = (evt) => {
+      console.log("onNameClick", evt);
+    };
     const graph = editor.create();
     graph.data(data);
     graph.render();

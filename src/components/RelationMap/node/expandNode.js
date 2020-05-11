@@ -11,21 +11,14 @@ import {
 import { treeUtil, dataUtil } from "../util";
 
 export default {
-  //   options: {
-  //     stateStyles: {
-  //       edit: {
-  //         fill: "red",
-  //       },
-  //     },
-  //   },
   draw(cfg, group) {
     const container = nodeBasicMethod.createNodeBox(group, cfg);
 
-    // 左上角标识
-    const signGroup = group.addGroup({
-      id: "group-sign",
-    });
-    nodeBasicMethod.createNodeSign(signGroup);
+    // // 左上角标识
+    // const signGroup = group.addGroup({
+    //   id: "group-sign",
+    // });
+    // nodeBasicMethod.createNodeSign(signGroup);
 
     const controlGroup = group.addGroup({
       id: "group-control",
@@ -64,40 +57,66 @@ export default {
     }
   },
   setState(name, value, item) {
-    // const hasOpacityClass = [
-    //   "ip-cp-line",
-    //   "ip-cp-bg",
-    //   "ip-cp-icon",
-    //   "ip-cp-box",
-    //   "ip-box",
-    //   "shape-circle-collapse",
-    // ];
     const group = item.getContainer();
-
-    // const childrens = group.get("children");
-    // graph.setAutoPaint(false);
-    // if (name === "emptiness") {
-    //   if (value) {
-    //     childrens.forEach((shape) => {
-    //       if (hasOpacityClass.indexOf(shape.get("name")) > -1) {
-    //         return;
-    //       }
-    //       shape.attr("opacity", 0.4);
-    //     });
-    //   } else {
-    //     childrens.forEach((shape) => {
-    //       if (hasOpacityClass.indexOf(shape.get("name")) > -1) {
-    //         return;
-    //       }
-    //       shape.attr("opacity", 1);
-    //     });
-    //   }
     if (name === "edit") {
       const editGroup = group.findById("group-edit");
       if (value) {
         editGroup.show();
       } else {
         editGroup.hide();
+      }
+    } else if (name === "hover-name") {
+      const shape = group.find((item) => {
+        return item.get("name") === "shape-text-name";
+      });
+      if (value) {
+        shape.attr({
+          cursor: "pointer",
+          fill: baseStyle.blueColor,
+        });
+      } else {
+        shape.attr({
+          cursor: "unset",
+          fill: baseStyle.nameColor,
+        });
+      }
+    } else if (
+      name === "hover-add-btn" ||
+      name === "hover-delete-btn" ||
+      name === "hover-edit-btn"
+    ) {
+      let shapeName = "";
+      switch (name) {
+        case "hover-add-btn":
+          shapeName = "add";
+          break;
+        case "hover-delete-btn":
+          shapeName = "delete";
+          break;
+        case "hover-edit-btn":
+          shapeName = "edit";
+          break;
+      }
+      if (value) {
+        nodeBasicMethod.setShapAttr(group, "shape-circle-" + shapeName, {
+          fill: baseStyle.blueColor,
+        });
+        nodeBasicMethod.setShapAttr(group, "shape-text-" + shapeName, {
+          fill: baseStyle.whiteColor,
+        });
+      } else {
+        nodeBasicMethod.setShapAttr(group, "shape-circle-" + shapeName, {
+          fill: baseStyle.whiteColor,
+        });
+        if (shapeName === "delete") {
+          nodeBasicMethod.setShapAttr(group, "shape-text-" + shapeName, {
+            fill: baseStyle.orangeColor,
+          });
+        } else {
+          nodeBasicMethod.setShapAttr(group, "shape-text-" + shapeName, {
+            fill: baseStyle.blueColor,
+          });
+        }
       }
     }
     // graph.setAutoPaint(true);
@@ -408,5 +427,11 @@ const nodeBasicMethod = {
       },
       name: "shape-polygon-" + name,
     });
+  },
+  setShapAttr: (group, name, attrs) => {
+    const shape = group.find((item) => {
+      return item.get("name") === name;
+    });
+    shape.attr(attrs);
   },
 };

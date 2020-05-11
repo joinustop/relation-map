@@ -38,7 +38,8 @@ export default {
   },
   shouldBegin(evt) {
     const item = evt.item;
-    var type = item.getType();
-    return type === "node";
+    const type = item.getType();
+    const model = item.getModel();
+    return type === "node" && model.depth > 1;
   },
 };

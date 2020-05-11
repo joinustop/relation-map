@@ -3,7 +3,7 @@ export const getTextStyle = (name) => {
   let config = {
     textAlign: "center",
     textBaseline: "middle",
-    fill: "#666666",
+    fill: baseStyle.nameColor,
     fontSize: 12,
     fontWeight: "normal",
   };

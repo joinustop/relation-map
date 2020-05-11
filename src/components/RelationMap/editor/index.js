@@ -1,10 +1,6 @@
 import G6 from "@antv/g6";
 import {
   registerCustomBehavior,
-  ADD_CLICK,
-  EDIT_CLICK,
-  DELETE_CLICK,
-  EDIT_MODE,
 } from "../behavior";
 import { registerCustomNode, EXPAND_NODE } from "../node";
 import { registerListener } from "../listener";
@@ -13,10 +9,11 @@ export default class Editor {
     this.height = height;
     this.width = width;
   }
+  onNameClick() {}
   create() {
     const { width, height } = this;
     registerCustomNode(G6);
-    registerCustomBehavior(G6);
+    const behaviors = registerCustomBehavior(G6);
     const graph = new G6.TreeGraph({
       container: "mapContainer",
       width,
@@ -32,10 +29,7 @@ export default class Editor {
           },
           "drag-canvas",
           "zoom-canvas",
-          ADD_CLICK,
-          EDIT_CLICK,
-          DELETE_CLICK,
-          EDIT_MODE,
+          ...behaviors,
         ],
       },
       defaultNode: {
@@ -72,7 +66,7 @@ export default class Editor {
       },
     });
 
-    registerListener(graph);
+    registerListener(graph, this);
 
     return graph;
   }
