@@ -157,7 +157,7 @@ const nodeBasicMethod = {
       name: "position",
       attrs: {
         x: 1,
-        y: baseStyle.height - 16 - 24,
+        y: baseStyle.height - 16 - 25,
         fill: getPositionColor(position),
         stroke: getPositionColor(position),
       },
@@ -170,7 +170,7 @@ const nodeBasicMethod = {
       name: "level",
       attrs: {
         x: 1 + 75 + 2,
-        y: baseStyle.height - 16 - 24,
+        y: baseStyle.height - 16 - 25,
         fill: getLevelColor(level),
         stroke: getLevelColor(level),
       },

@@ -12,6 +12,7 @@ export default class Editor {
   onNameClick() {}
   onAddClick() {}
   onEditClick(){}
+  onDeleteClick(){}
   create() {
     const { width, height } = this;
     registerCustomNode(G6);
