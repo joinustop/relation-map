@@ -5,6 +5,7 @@ import {
   getMarkerStyle,
   getPolygonStyle,
   getPositionColor,
+  getNameColor,
   getLevelColor,
   baseStyle,
 } from "../style";
@@ -28,7 +29,7 @@ export default {
       nodeBasicMethod.createNodeMarker(controlGroup, cfg);
     }
 
-    nodeBasicMethod.createEditBox(group);
+    nodeBasicMethod.createEditBox(group, cfg);
     return container;
   },
   getAnchorPoints() {
@@ -178,16 +179,17 @@ const nodeBasicMethod = {
     // todo 计算偏移量，让name + dot + line在节点中大致居中
     nodeBasicMethod.createText(mainGroup, {
       name: "name",
-      text: name,
+      text: dataUtil.formatNullText(name),
       attrs: {
         x: w / 2,
         y: 19 + 3,
+        fill: getNameColor(name),
       },
     });
 
     nodeBasicMethod.createText(mainGroup, {
       name: "line",
-      text: line,
+      text: dataUtil.formatNullText(line),
       attrs: {
         x: w / 2 - 8,
         y: 44.5,
@@ -204,7 +206,7 @@ const nodeBasicMethod = {
 
     nodeBasicMethod.createText(mainGroup, {
       name: "job",
-      text: job,
+      text: dataUtil.formatNullText(job),
       attrs: {
         x: w / 2 + 8,
         y: 44.5,
@@ -222,7 +224,7 @@ const nodeBasicMethod = {
 
     nodeBasicMethod.createText(levelGroup, {
       name: "level",
-      text: level,
+      text: dataUtil.formatNullText(level),
       attrs: {
         x: (w * 3) / 4,
         y: 71 + 2,
@@ -245,7 +247,7 @@ const nodeBasicMethod = {
       },
     });
   },
-  createEditBox: (group) => {
+  createEditBox: (group, cfg) => {
     const editGroup = group.addGroup({
       id: "group-edit",
       visible: false,
@@ -255,19 +257,30 @@ const nodeBasicMethod = {
       name: "shadow-mask",
     });
 
-    nodeBasicMethod.createBoxBtn(editGroup, "add", {
-      x: 16 + 15,
-      y: 84 / 2,
-    });
-    nodeBasicMethod.createBoxBtn(editGroup, "edit", {
-      x: 16 * 2 + 30 + 15,
-      y: 84 / 2,
-    });
-    nodeBasicMethod.createBoxBtn(editGroup, "delete", {
-      x: 16 * 3 + 30 * 2 + 15,
-      y: 84 / 2,
-      fill: baseStyle.orangeColor,
-    });
+    if (cfg.depth !== 1) {
+      nodeBasicMethod.createBoxBtn(editGroup, "add", {
+        x: 16 + 15,
+        y: 84 / 2,
+      });
+      nodeBasicMethod.createBoxBtn(editGroup, "edit", {
+        x: 16 * 2 + 30 + 15,
+        y: 84 / 2,
+      });
+      nodeBasicMethod.createBoxBtn(editGroup, "delete", {
+        x: 16 * 3 + 30 * 2 + 15,
+        y: 84 / 2,
+        fill: baseStyle.orangeColor,
+      });
+    } else {
+      nodeBasicMethod.createBoxBtn(editGroup, "add", {
+        x: baseStyle.width / 4,
+        y: 84 / 2,
+      });
+      nodeBasicMethod.createBoxBtn(editGroup, "edit", {
+        x: (baseStyle.width * 3) / 4,
+        y: 84 / 2,
+      });
+    }
   },
   createBoxBtn: (group, action, attrs) => {
     let name = "";

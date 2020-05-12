@@ -40,6 +40,6 @@ export default {
     const item = evt.item;
     const type = item.getType();
     const model = item.getModel();
-    return type === "node" && model.depth > 1;
+    return type === "node" && model.depth > 0;
   },
 };

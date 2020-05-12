@@ -7,6 +7,9 @@ let data = {
   level: "高",
   children: [
     {
+      id: "67efeeda-9877-4210-8b87-35e3585c342e",
+    },
+    {
       id: "65d64128-e9fc-423e-a42d-3ace33a90b34",
       name: "AA",
       job: "成本负责人",

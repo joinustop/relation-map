@@ -1,4 +1,9 @@
-import { baseStyle, getLevelColor, getPositionColor } from "./base";
+import {
+  baseStyle,
+  getLevelColor,
+  getPositionColor,
+  getNameColor,
+} from "./base";
 import { getCircleStyle } from "./circle";
 import { getTextStyle } from "./text";
 import { getMarkerStyle } from "./marker";
@@ -10,6 +15,7 @@ export {
   getLevelColor,
   getPositionColor,
   getCircleStyle,
+  getNameColor,
   getTextStyle,
   getMarkerStyle,
   getPolygonStyle,

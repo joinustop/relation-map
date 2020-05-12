@@ -9,7 +9,9 @@ export const baseStyle = {
   blueColor: "#2693F2",
   whiteColor: "#FFFFFF",
   grayColor: "#333333",
+  nullColor: "#B6BDC6",
   nameColor: "#666666",
+  cccColor: "#CCCCCC",
   shadowStyle: {
     shadowColor: "#CCCCCC",
     shadowOffsetX: 1,
@@ -26,8 +28,16 @@ export const baseStyle = {
   size: 15,
 };
 
+export const getNameColor = (name) => {
+  let color = baseStyle.cccColor;
+  if (name) {
+    color = baseStyle.nameColor;
+  } 
+  return color;
+};
+
 export const getPositionColor = (position) => {
-  let color = baseStyle.grayColor;
+  let color = baseStyle.nullColor;
   if (position > 0) {
     color = baseStyle.greenColor;
   } else if (position < 0) {
@@ -39,7 +49,7 @@ export const getPositionColor = (position) => {
 };
 
 export const getLevelColor = (level) => {
-  let color = baseStyle.grayColor;
+  let color = baseStyle.nullColor;
   if (level === "高") {
     color = baseStyle.greenColor;
   } else if (level === "低") {

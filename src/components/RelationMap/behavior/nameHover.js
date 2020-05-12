@@ -38,6 +38,7 @@ export default {
   shouldBegin(evt) {
     const { item, target } = evt;
     var name = target.get("name");
-    return name === "shape-text-name" && !item.hasState("edit");
+    var model = item.getModel();
+    return name === "shape-text-name" && model.name && !item.hasState("edit");
   },
 };
