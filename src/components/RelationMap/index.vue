@@ -25,6 +25,9 @@ export default {
     graph.render();
     graph.fitView();
     this.graph = graph;
+    setTimeout(()=>{
+      this.save()
+    }, 5000);
   },
   methods: {
     handleNameClick: (event) => {
@@ -43,6 +46,10 @@ export default {
       data.name = "update";
       graph.changeData();
       item.refresh();
+    },
+    save(){
+      const data = this.graph.save();
+      console.log("save", data);
     },
   },
 };
