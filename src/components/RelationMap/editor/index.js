@@ -10,6 +10,8 @@ export default class Editor {
     this.width = width;
   }
   onNameClick() {}
+  onAddClick() {}
+  onEditClick(){}
   create() {
     const { width, height } = this;
     registerCustomNode(G6);

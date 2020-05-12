@@ -17,14 +17,33 @@ export default {
     const width = document.getElementById("mapContainer").scrollWidth;
     const height = document.getElementById("mapContainer").scrollHeight || 500;
     const editor = new Editor(width, height);
-    editor.onNameClick = (evt) => {
-      console.log("onNameClick", evt);
-    };
+    editor.onNameClick = this.handleNameClick;
+    editor.onAddClick = this.handleAddClick;
+    editor.onEditClick = this.handleEditClick;
     const graph = editor.create();
     graph.data(data);
     graph.render();
     graph.fitView();
     this.graph = graph;
+  },
+  methods: {
+    handleNameClick: (event) => {
+      console.log("handleNameClick", event);
+    },
+    handleAddClick: (event) => {
+      const { graph, item } = event;
+      const model = item.getModel();
+      graph.addChild({ id: "lee" }, model.id);
+      item.refresh();
+    },
+    handleEditClick: (event) => {
+      const { graph, item } = event;
+      const model = item.getModel();
+      const data = graph.findDataById(model.id);
+      data.name = "update";
+      graph.changeData();
+      item.refresh();
+    },
   },
 };
 </script>
