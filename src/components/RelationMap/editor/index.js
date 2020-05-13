@@ -1,6 +1,12 @@
 import G6 from "@antv/g6";
 import {
   registerCustomBehavior,
+  NAME_HOVER,
+  EDIT_BTN_HOVER,
+  ADD_CLICK,
+  EDIT_CLICK,
+  DELETE_CLICK,
+  EDIT_MODE,
 } from "../behavior";
 import { registerCustomNode, EXPAND_NODE } from "../node";
 import { registerListener } from "../listener";
@@ -11,28 +17,39 @@ export default class Editor {
   }
   onNameClick() {}
   onAddClick() {}
-  onEditClick(){}
-  onDeleteClick(){}
+  onEditClick() {}
+  onDeleteClick() {}
   create() {
     const { width, height } = this;
+
     registerCustomNode(G6);
-    const behaviors = registerCustomBehavior(G6);
+    registerCustomBehavior(G6);
+
+    const defaultMode = [
+      {
+        type: "collapse-expand",
+        shouldBegin(evt) {
+          const target = evt.target;
+          return target.get("name") === "shape-marker-collapse";
+        },
+      },
+      "drag-canvas",
+      "zoom-canvas",
+      NAME_HOVER,
+    ];
     const graph = new G6.TreeGraph({
       container: "mapContainer",
       width,
       height,
       modes: {
-        default: [
-          {
-            type: "collapse-expand",
-            shouldBegin(evt) {
-              const target = evt.target;
-              return target.get("name") === "shape-marker-collapse";
-            },
-          },
-          "drag-canvas",
-          "zoom-canvas",
-          ...behaviors,
+        default: defaultMode,
+        edit: [
+          ...defaultMode,
+          EDIT_BTN_HOVER,
+          ADD_CLICK,
+          EDIT_CLICK,
+          DELETE_CLICK,
+          EDIT_MODE,
         ],
       },
       defaultNode: {
@@ -71,6 +88,10 @@ export default class Editor {
 
     registerListener(graph, this);
 
+    setTimeout(() => {
+      graph.setMode("edit");
+      alert("into edit mode")
+    }, 5000);
     return graph;
   }
 }
