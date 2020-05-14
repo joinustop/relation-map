@@ -9,7 +9,7 @@ import {
   getLevelColor,
   baseStyle,
 } from "../style";
-import { treeUtil, dataUtil } from "../util";
+import { treeUtil, dataUtil, textUtil } from "../util";
 
 export default {
   draw(cfg, group) {
@@ -187,11 +187,15 @@ const nodeBasicMethod = {
       },
     });
 
+    const textOffset = textUtil.getOffset(
+      dataUtil.formatNullText(line),
+      dataUtil.formatNullText(job)
+    );
     nodeBasicMethod.createText(mainGroup, {
       name: "line",
       text: dataUtil.formatNullText(line),
       attrs: {
-        x: w / 2 - 8,
+        x: w / 2 - 8-textOffset,
         y: 44.5,
       },
     });
@@ -199,7 +203,7 @@ const nodeBasicMethod = {
     nodeBasicMethod.createCircle(mainGroup, {
       name: "dot",
       attrs: {
-        x: w / 2,
+        x: w / 2-textOffset,
         y: 44.5,
       },
     });
@@ -208,7 +212,7 @@ const nodeBasicMethod = {
       name: "job",
       text: dataUtil.formatNullText(job),
       attrs: {
-        x: w / 2 + 8,
+        x: w / 2 + 8-textOffset,
         y: 44.5,
       },
     });
